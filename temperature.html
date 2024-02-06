@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <title>React App</title>
+
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const App = () => {
+		var fahrenheit =10;
+        
+        // create variable to store fahrenheit here
+		var celsius;
+        // create function to convert into celsius here
+
+        return (
+          <>
+				<h1>Temperature convertor</h1>
+                <p>Temperature in Fahrenheit:{fahrenheit}</p>
+                <p>Temperature in Celsius:{(fahrenheit-32)/1.8000}</p>  
+          </>
+        );
+      };
+
+      const rootElement = ReactDOM.createRoot(document.getElementById("root"));
+      rootElement.render(<App />);
+    </script>
+
+  </body>
+</html>

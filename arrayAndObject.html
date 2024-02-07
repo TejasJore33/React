@@ -24,7 +24,8 @@
         return (
             <>
                 <h1>Array and Objects in Javascript</h1>
-                <h2>{arr}</h2>
+                {arr.map((num)=><h2>{num}</h2>)}
+                
                 <h2>Age is:{obj.age}</h2>
             </>
         );      

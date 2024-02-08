@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Babel integration -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- React integration -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <title>React App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      function App() {
+        const arry = [
+          { name: "Tejas", age: 23, qualification: "MCA" },
+          { name: "Nikhil", age: 24, qualification: "PHD" },
+          { name: "Swapnil", age: 22, qualification: "MCA" },
+        ];
+
+        return (
+          <>
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Age</th>
+                  <th>Qualification</th>
+                </tr>
+              </thead>
+              <tbody>
+                {arry.map((student, index) => (
+                  <tr key={index}>
+                    <td>{student.name}</td>
+                    <td>{student.age}</td>
+                    <td>{student.qualification}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        );
+      }
+      ReactDOM.render(<App />, document.getElementById("root"));
+    </script>
+  </body>
+</html>

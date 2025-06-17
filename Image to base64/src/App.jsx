@@ -3,21 +3,21 @@ import './App.css'
 
 
 
-// Main App component
+
 function App() {
-  // State to store uploaded files and their Base64 data
+  
   const [images, setImages] = useState([]);
-  // State for drag-and-drop highlight
+  
   const [isDragging, setIsDragging] = useState(false);
-  // State for dark mode
+  
   const [darkMode, setDarkMode] = useState(false);
-  // State for error messages
+  
   const [error, setError] = useState('');
 
-  // Ref for the file input element to programmatically click it
+  
   const fileInputRef = useRef(null);
 
-  // Effect to apply dark mode class to body and ensure font-inter is loaded
+  
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark-mode');
@@ -25,7 +25,7 @@ function App() {
       document.documentElement.classList.remove('dark-mode');
     }
 
-    // Load Inter font
+   
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
     link.rel = 'stylesheet';
@@ -37,43 +37,43 @@ function App() {
   }, [darkMode]);
 
 
-  // Function to handle file selection (from input or drag-and-drop)
+
   const handleFiles = (files) => {
-    setError(''); // Clear any previous errors
+    setError('');
     const newImages = [];
 
-    // Loop through each selected file
+
     Array.from(files).forEach((file) => {
-      // Validate file type
+
       const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/svg+xml'];
       if (!allowedTypes.includes(file.type)) {
         setError(`Invalid file type: ${file.name}. Only JPG, PNG, GIF, BMP, SVG are allowed.`);
         return;
       }
 
-      // Validate file size (e.g., max 5MB)
-      const maxSize = 5 * 1024 * 1024; // 5 MB
+
+      const maxSize = 5 * 1024 * 1024; 
       if (file.size > maxSize) {
         setError(`File too large: ${file.name}. Maximum size is 5MB.`);
         return;
       }
 
-      // Create a FileReader to read the file content
+
       const reader = new FileReader();
 
-      // Set up a loading state for the current file
+
       const newImage = {
         file,
         name: file.name,
         size: file.size,
         type: file.type,
-        previewUrl: URL.createObjectURL(file), // Create object URL for preview
+        previewUrl: URL.createObjectURL(file),
         base64: '',
         loading: true,
       };
       newImages.push(newImage);
 
-      // Event handler for when the file is finished loading
+      
       reader.onloadend = () => {
         setImages((prevImages) =>
           prevImages.map((img) =>
@@ -84,49 +84,45 @@ function App() {
         );
       };
 
-      // Read the file as a Data URL (Base64)
       reader.readAsDataURL(file);
     });
 
     setImages((prevImages) => [...prevImages, ...newImages]);
   };
 
-  // Handler for direct file input change
+  
   const handleChange = (e) => {
     handleFiles(e.target.files);
   };
 
-  // Handler for drag over event
+  
   const handleDragOver = (e) => {
-    e.preventDefault(); // Prevent default to allow drop
-    setIsDragging(true); // Add visual feedback for dragging
+    e.preventDefault();
+    setIsDragging(true); 
   };
 
-  // Handler for drag leave event
+
   const handleDragLeave = (e) => {
     e.preventDefault();
-    setIsDragging(false); // Remove visual feedback
+    setIsDragging(false); 
   };
 
-  // Handler for drop event
   const handleDrop = (e) => {
     e.preventDefault();
-    setIsDragging(false); // Remove visual feedback
-    handleFiles(e.dataTransfer.files); // Process dropped files
+    setIsDragging(false); 
+    handleFiles(e.dataTransfer.files); 
   };
 
-  // Function to copy Base64 string to clipboard
   const copyToClipboard = (text) => {
-    // Fallback for document.execCommand('copy') which is deprecated but works in iframes
     const textarea = document.createElement('textarea');
     textarea.value = text;
-    textarea.style.position = 'fixed'; // Avoid scrolling to bottom
-    textarea.style.opacity = 0; // Hide the textarea
+    textarea.style.position = 'fixed'; 
+    textarea.style.opacity = 0; 
     document.body.appendChild(textarea);
     textarea.select();
     try {
       document.execCommand('copy');
-      alert('Copied to clipboard!'); // Simple feedback
+      alert('Copied to clipboard!'); 
     } catch (err) {
       console.error('Failed to copy text: ', err);
       alert('Failed to copy. Please try again.');
@@ -135,34 +131,28 @@ function App() {
     }
   };
 
-  // Function to download Base64 string as a .txt file
   const downloadBase64 = (base64String, fileName) => {
     const element = document.createElement('a');
     const file = new Blob([base64String], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
     element.download = `${fileName.split('.')[0]}.txt`;
-    document.body.appendChild(element); // Required for Firefox
+    document.body.appendChild(element); 
     element.click();
-    document.body.removeChild(element); // Clean up
+    document.body.removeChild(element); 
   };
 
-  // Function to clear all uploaded images and data
   const clearAll = () => {
     setImages([]);
     setError('');
-    // Revoke object URLs to free up memory
     images.forEach((img) => URL.revokeObjectURL(img.previewUrl));
   };
 
   return (
     <div className="app-container">
-      {/* Inline styles for the application */}
- 
 
       <div className="max-w-4xl-centered">
         <h1 className="title">Image to Base64 Converter</h1>
 
-        {/* Dark Mode Toggle */}
         <div className="dark-mode-toggle-container">
           <label htmlFor="darkModeToggle" className="toggle-label">
             <input
@@ -178,13 +168,12 @@ function App() {
           </label>
         </div>
 
-        {/* Drag and Drop Area */}
         <div
           className={`drag-drop-area ${isDragging ? 'is-dragging' : ''}`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          onClick={() => fileInputRef.current.click()} // Click to open file dialog
+          onClick={() => fileInputRef.current.click()} 
           role="button"
           tabIndex="0"
           aria-label="Upload images by dragging and dropping or clicking"
@@ -227,14 +216,12 @@ function App() {
           </div>
         )}
 
-        {/* Image Previews and Base64 Output */}
         <div className="image-previews-container">
           {images.map((image, index) => (
             <div
               key={index}
               className="image-card"
             >
-              {/* Image Thumbnail */}
               <div className="thumbnail-container">
                 {image.loading ? (
                   <div className="loading-spinner"></div>
@@ -243,7 +230,6 @@ function App() {
                 )}
               </div>
 
-              {/* Image Info and Base64 String */}
               <div className="image-info-section">
                 <h3 className="image-name" title={image.name}>{image.name}</h3>
                 <p className="image-meta">
